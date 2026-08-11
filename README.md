@@ -71,8 +71,6 @@ FastAPI 查询接口
 - re
 - pytest
 
-项目核心运行逻辑只使用 Python 标准库，测试部分依赖 pytest。
-
 ## 项目结构
 
 ```text
