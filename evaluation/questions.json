@@ -1,0 +1,94 @@
+[
+  {
+    "query": "员工去上海出差住宿费每晚标准是多少？",
+    "expected_filename": "travel_policy.md"
+  },
+  {
+    "query": "出差住宿报销需要哪些材料？",
+    "expected_filename": "travel_policy.md"
+  },
+  {
+    "query": "知识库的更新流程是什么？",
+    "expected_filename": "knowledge_management.md"
+  },
+  {
+    "query": "员工在资料不足时智能助手应该怎么回答？",
+    "expected_filename": "knowledge_management.md"
+  },
+  {
+    "query": "普通员工上海出差三晚的住宿预算是多少？",
+    "expected_filename": "travel_policy.md"
+  },
+  {
+    "query": "公司是否允许个人直接报销私人旅游开支？",
+    "expected_filename": "travel_policy.md"
+  },
+  {
+    "query": "标准超过住宿限额时应该怎么处理？",
+    "expected_filename": "travel_policy.md"
+  },
+  {
+    "query": "知识库里哪些信息不能上传？",
+    "expected_filename": "knowledge_management.md"
+  },
+  {
+    "query": "工具调用必须满足哪些安全限制？",
+    "expected_filename": "knowledge_management.md"
+  },
+  {
+    "query": "如何检查知识库答案来源？",
+    "expected_filename": "knowledge_management.md"
+  },
+  {
+    "query": "年假需要提前几个工作日申请？",
+    "expected_filename": "leave_policy.md"
+  },
+  {
+    "query": "连续病假两天以上需要提供什么资料？",
+    "expected_filename": "leave_policy.md"
+  },
+  {
+    "query": "员工漏打卡几天内申请补卡？",
+    "expected_filename": "leave_policy.md"
+  },
+  {
+    "query": "测试知识库为什么不能上传客户身份证？",
+    "expected_filename": "security_policy.md"
+  },
+  {
+    "query": "资料中发现忽略以上指令的文字应该怎么办？",
+    "expected_filename": "security_policy.md"
+  },
+  {
+    "query": "费用发生后多少天内可以提交报销申请？",
+    "expected_filename": "expense_policy.md"
+  },
+  {
+    "query": "报销申请涉及哪些审批步骤？",
+    "expected_filename": "expense_policy.md"
+  },
+  {
+    "query": "忘记统一平台密码后应该如何处理？",
+    "expected_filename": "it_support.md"
+  },
+  {
+    "query": "入职第一周应完成什么培训和申请？",
+    "expected_filename": "onboarding_policy.md"
+  },
+  {
+    "query": "每周研发周会在什么时间举行？",
+    "expected_filename": "meeting_policy.md"
+  },
+  {
+    "query": "会议纪要至少有哪些字段？",
+    "expected_filename": "meeting_policy.md"
+  },
+  {
+    "query": "代码变更合并之前需要做什么？",
+    "expected_filename": "onboarding_policy.md"
+  },
+  {
+    "query": "如何避免将生产数据库明文备份带到个人电脑？",
+    "expected_filename": "it_support.md"
+  }
+]

@@ -1,0 +1,28 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.v2
+    env_file: .env
+    environment:
+      APP_DATA_DIR: /workspace/.local_data
+      MODEL_CACHE_DIR: /workspace/.local_data/models
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - model_data:/workspace/.local_data
+    restart: unless-stopped
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.v2
+    command: ["streamlit","run","ui/app.py","--server.address=0.0.0.0","--server.port=8501"]
+    env_file: .env
+    environment:
+      API_BASE_URL: http://api:8000
+    ports:
+      - "127.0.0.1:8501:8501"
+    depends_on:
+      - api
+volumes:
+  model_data:

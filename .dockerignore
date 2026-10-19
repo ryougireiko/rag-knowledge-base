@@ -1,0 +1,13 @@
+.git
+.env
+.local_data
+__pycache__
+.venv
+.pytest_cache
+.idea
+*.sqlite3
+models
+.agents/
+.claude/
+project_tree.txt
+*.bak
