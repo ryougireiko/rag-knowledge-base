@@ -5,7 +5,10 @@ from enterprise.api import create_app
 def test_api_auth_and_upload(services):
     app=create_app(services)
     with TestClient(app) as client:
-        assert client.get('/health').status_code==200
+        health = client.get('/health')
+        assert health.status_code == 200
+        assert health.json()['database'] == 'ok'
+        assert health.json()['cache'] == 'disabled'
         assert client.get('/api/documents').status_code==401
         head={'Authorization':'Bearer unit-test-secret'}
         res=client.post('/api/documents',headers=head,

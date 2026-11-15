@@ -65,8 +65,18 @@ class IngestionService:
         try:
             self.vector.upsert(rows, vectors)
         except Exception:
-            self.store.delete(doc_id)  # 向量写入失败则回滚登记，保持一致性
+            self.store.delete(doc_id)  # 向量写入失败则补偿删除登记数据
             raise
+
+        # 第二次递增版本：避免并发检索在“元数据已写入、向量尚未写入”窗口缓存不完整结果。
+        if hasattr(self.store, "touch_revision"):
+            try:
+                self.store.touch_revision()
+            except Exception:
+                # 版本号无法更新时撤销本次索引写入，避免新旧缓存状态不确定。
+                self.vector.delete(doc_id)
+                self.store.delete(doc_id)
+                raise
         return {'id':doc_id,'filename':safe_filename,'duplicate':False,'chunks':len(rows)}
 
     def delete(self, doc_id: str) -> bool:

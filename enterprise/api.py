@@ -42,8 +42,8 @@ def create_app(service: Services | None = None):
 
     app = FastAPI(
         title='企业知识库智能助手 API',
-        description='单用户本地演示项目：支持文档管理、混合检索、RAG 问答及 Agent 工具调用。',
-        version='2.0.0',
+        description='个人工程演示项目：支持 MySQL 文档持久化、Redis 检索缓存、混合检索、RAG 问答及 Agent 工具调用。',
+        version='3.0.0',
         lifespan=lifespan,
     )
 
@@ -73,9 +73,14 @@ def create_app(service: Services | None = None):
 
     @app.get('/health', tags=['服务状态'], summary='检查服务运行状态')
     def health(svc: Services = Depends(get_svc)):
-        """健康检查：返回当前后端配置。"""
-        return {'status':'ok','mode':svc.settings.llm_backend,'vector_backend':svc.settings.vector_backend,
-                'embeddings':svc.settings.embedding_backend}
+        """健康检查：检查关系数据库与缓存，不暴露连接串或凭据。"""
+        checks = svc.health()
+        return {
+            **checks,
+            'mode': svc.settings.llm_backend,
+            'vector_backend': svc.settings.vector_backend,
+            'embeddings': svc.settings.embedding_backend,
+        }
 
     @app.get('/api/documents',dependencies=[Depends(authorize)], tags=['文档管理'], summary='获取已索引文档列表')
     def documents(svc: Services = Depends(get_svc)):
