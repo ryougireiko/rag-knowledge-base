@@ -85,6 +85,7 @@ uvicorn enterprise.api:app --host 127.0.0.1 --port 8000
 
 ```bash
 cp .env.example .env
+cp .env.example .env.api
 ```
 
 如果你已经有 V2 的 `.env`（其中可能保存了 DeepSeek 密钥），不要直接覆盖它；保留原有密钥，只把模板中的 `MYSQL_ROOT_PASSWORD`、`MYSQL_DATABASE`、`MYSQL_USER`、`MYSQL_PASSWORD` 等缺失变量补充进去。
@@ -99,6 +100,7 @@ cp .env.example .env
 
 ```powershell
 Copy-Item .env.example .env
+Copy-Item .env.example .env.api
 ```
 
 启动四个服务：
@@ -124,17 +126,20 @@ Compose 会通过 `DB_HOST=mysql` 和 `REDIS_URL=redis://redis:6379/0` 连接容
 
 ### 启用真实 BGE / Chroma / DeepSeek
 
-如果需要完整 AI 能力，在 `.env` 中设置：
+如果需要完整 AI 能力，在 `.env.api` 中设置：
+
+配置说明：`.env.api` 中的 `APP_API_TOKEN` 必须与 `.env` 中的值完全一致。复制模板生成 `.env.api` 后，请删除其中的 `MYSQL_ROOT_PASSWORD`，该密码只应保留在 `.env` 中。API 容器通过 `env_file: .env.api` 读取运行配置。
 
 ```dotenv
 DEMO_MODE=false
 DEEPSEEK_API_KEY=你的密钥
+APP_API_TOKEN=与.env中完全相同的令牌
 EMBEDDING_BACKEND=bge
 VECTOR_BACKEND=chroma
 LLM_BACKEND=deepseek
 ```
 
-首次运行 BGE 会下载或加载模型缓存，镜像与模型体积较大。请确认磁盘空间充足。不要把 `.env` 提交到 Git。
+首次运行 BGE 会下载或加载模型缓存，镜像与模型体积较大。请确认磁盘空间充足。不要把 `.env`、`.env.api` 或其他真实密钥配置提交到 GitHub。
 
 ## 5. 从旧版 SQLite 迁移文档元数据到 MySQL
 

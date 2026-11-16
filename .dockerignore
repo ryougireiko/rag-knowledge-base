@@ -11,3 +11,4 @@ models
 .claude/
 project_tree.txt
 *.bak
+.env.*

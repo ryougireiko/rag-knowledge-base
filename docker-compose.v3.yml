@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.v3
-    env_file: .env
+    env_file: .env.api
     environment:
       APP_DATA_DIR: /workspace/.local_data
       MODEL_CACHE_DIR: /workspace/.local_data/models
@@ -30,9 +30,9 @@ services:
       context: .
       dockerfile: Dockerfile.v3
     command: ["streamlit", "run", "ui/app.py", "--server.address=0.0.0.0", "--server.port=8501"]
-    env_file: .env
     environment:
       API_BASE_URL: http://api:8000
+      APP_API_TOKEN: ${APP_API_TOKEN:?请在 .env 中设置 APP_API_TOKEN}
     ports:
       - "127.0.0.1:8501:8501"
     depends_on:
