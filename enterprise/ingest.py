@@ -88,8 +88,12 @@ class IngestionService:
         return self.store.delete(doc_id)
 
     def rebuild(self) -> int:
-        """依据登记库中的全部片段重建向量索引，返回片段数。"""
+        """依据登记库中的全部片段重建向量索引，并使旧检索缓存失效。"""
         chunks = self.store.chunks()
         if chunks:
             self.vector.upsert(chunks, self.embedder.encode([c['text'] for c in chunks]))
+
+        # 重建会改变向量索引状态；递增数据库版本，避免继续读取重建前的缓存。
+        if hasattr(self.store, "touch_revision"):
+            self.store.touch_revision()
         return len(chunks)

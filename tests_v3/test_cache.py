@@ -1,6 +1,7 @@
 from types import SimpleNamespace
 
 from enterprise.cache import RedisCache
+from enterprise.ingest import IngestionService
 from enterprise.retrieval import Retriever
 from enterprise.storage import DocumentStore
 
@@ -92,3 +93,27 @@ def test_redis_cache_falls_back_when_redis_is_unavailable():
     assert cache.get_json("key") is None
     assert cache.set_json("key", {"ok": True}, 10) is False
     assert cache.ping() is False
+
+
+class RebuildVector:
+    def __init__(self):
+        self.upserted = []
+
+    def upsert(self, chunks, vectors):
+        self.upserted.append((chunks, vectors))
+
+
+def test_rebuild_increments_revision_to_invalidate_search_cache(tmp_path):
+    store = DocumentStore(tmp_path / "documents.sqlite3")
+    vector = RebuildVector()
+    embedder = FakeEmbedder()
+    try:
+        _add_doc(store, "doc-rebuild", "重建索引后需要让旧缓存失效")
+        before = store.revision()
+        service = IngestionService(store, vector, embedder, settings=None)
+
+        assert service.rebuild() == 1
+        assert len(vector.upserted) == 1
+        assert store.revision() == before + 1
+    finally:
+        store.close()
